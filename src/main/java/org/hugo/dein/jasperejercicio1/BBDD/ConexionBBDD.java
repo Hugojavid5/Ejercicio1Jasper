@@ -7,11 +7,21 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Esta clase maneja la conexión con la base de datos, proporcionando métodos
+ * para obtener y cerrar la conexión, así como cargar las propiedades de conexión
+ * desde un archivo de configuración.
+ */
 public class ConexionBBDD {
 
     private static Connection connection;
 
-
+    /**
+     * Constructor que establece la conexión con la base de datos utilizando las
+     * propiedades cargadas desde un archivo de configuración.
+     *
+     * @throws SQLException Si ocurre un error al establecer la conexión.
+     */
     public ConexionBBDD() throws SQLException {
         Properties connConfig = loadProperties();
         String url = connConfig.getProperty("dburl");
@@ -19,10 +29,21 @@ public class ConexionBBDD {
         connection.setAutoCommit(true);
     }
 
+    /**
+     * Devuelve la conexión actual con la base de datos.
+     *
+     * @return La conexión activa.
+     */
     public static Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Cierra la conexión con la base de datos si está abierta.
+     *
+     * @return La conexión, que será nula si ha sido cerrada correctamente.
+     * @throws SQLException Si ocurre un error al cerrar la conexión.
+     */
     public Connection closeConnection() throws SQLException {
         if (connection != null && !connection.isClosed()) {
             connection.close();
@@ -31,6 +52,13 @@ public class ConexionBBDD {
         return connection;
     }
 
+    /**
+     * Carga las propiedades de configuración de la base de datos desde un archivo
+     * llamado "configuration.properties".
+     *
+     * @return Un objeto Properties con las configuraciones de conexión.
+     * @throws RuntimeException Si ocurre un error al leer el archivo de propiedades.
+     */
     public static Properties loadProperties() {
         try (FileInputStream fs = new FileInputStream("configuration.properties")) {
             Properties props = new Properties();

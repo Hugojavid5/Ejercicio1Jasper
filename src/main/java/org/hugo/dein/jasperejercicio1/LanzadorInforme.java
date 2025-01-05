@@ -1,4 +1,5 @@
 package org.hugo.dein.jasperejercicio1;
+
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -13,13 +14,25 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Clase principal que lanza la aplicación JavaFX y genera un informe JasperReports.
+ */
 public class LanzadorInforme extends Application {
 
+    /**
+     * Metodo principal que lanza la aplicación JavaFX.
+     *
+     * @param args Argumentos de línea de comandos.
+     */
     public static void main(String[] args) {
         launch(args); // Inicia la aplicación JavaFX
     }
 
+    /**
+     * Metodo sobrescrito que se ejecuta al iniciar la aplicación JavaFX.
+     *
+     * @param primaryStage La ventana principal de la aplicación.
+     */
     @Override
     public void start(Stage primaryStage) {
         ConexionBBDD bbdd;
@@ -54,6 +67,12 @@ public class LanzadorInforme extends Application {
         }
     }
 
+    /**
+     * Muestra una ventana emergente con un mensaje de error.
+     *
+     * @param titulo   El título de la ventana emergente.
+     * @param mensaje  El mensaje que se mostrará en la ventana.
+     */
     private void mostrarError(String titulo, String mensaje) {
         // Crear una ventana emergente de tipo "error"
         Alert alert = new Alert(AlertType.ERROR);
