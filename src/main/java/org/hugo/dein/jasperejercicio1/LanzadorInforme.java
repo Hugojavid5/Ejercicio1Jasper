@@ -1,8 +1,8 @@
 package org.hugo.dein.jasperejercicio1;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import org.hugo.dein.jasperejercicio1.BBDD.ConexionBBDD;
 import net.sf.jasperreports.engine.*;
@@ -14,13 +14,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Clase principal que lanza la aplicación JavaFX y genera un informe JasperReports.
- */
 public class LanzadorInforme extends Application {
 
+
     /**
-     * Metodo principal que lanza la aplicación JavaFX.
+     * Metodo principal de ejecución de la aplicación. Llama al metodo {@link #start(Stage)}
+     * para inicializar y mostrar el informe basado en JasperReports.
      *
      * @param args Argumentos de línea de comandos.
      */
@@ -28,57 +27,54 @@ public class LanzadorInforme extends Application {
         launch(args); // Inicia la aplicación JavaFX
     }
 
+
     /**
-     * Metodo sobrescrito que se ejecuta al iniciar la aplicación JavaFX.
+     * Metodo encargado de la lógica principal para generar y mostrar el informe.
+     * Este metodo establece la conexión a la base de datos, carga el informe JasperReport,
+     * rellena el informe con datos de la base de datos y finalmente lo muestra usando un visor de informes.
      *
-     * @param primaryStage La ventana principal de la aplicación.
+     * @param primaryStage El escenario principal de la aplicación.
      */
     @Override
     public void start(Stage primaryStage) {
-        ConexionBBDD bbdd;
+        ConexionBBDD db;
         try {
-            // Se establece la conexión a la base de datos
-            bbdd = new ConexionBBDD();
+            db = new ConexionBBDD();
+            // Carga el archivo Jasper del informe
+            InputStream reportStream = db.getClass().getResourceAsStream("/jasper/Ejercicio1Paises.jasper");
 
-            // Se carga el informe desde los recursos
-            InputStream reportStream = bbdd.getClass().getResourceAsStream("/Jasper/Coffee.jasper");
-            if (reportStream == null) {
-                System.out.println("El archivo Coffee.jrxml no se encontró.");
-                return; // Salimos si no encontramos el archivo
-            }
 
-            // Se carga el informe JasperReport
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
+            JasperReport report = (JasperReport) JRLoader.loadObject(reportStream);
 
-            // Parámetros para el informe
+            // Parámetros del informe
             Map<String, Object> parameters = new HashMap<>();
-            parameters.put("IMAGE_PATH", bbdd.getClass().getResource("/imagenes/").toString());
-
-            // Se rellena el informe con los datos de la base de datos
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, ConexionBBDD.getConnection());
-
-            // Se muestra el informe en un visor de JasperReports
-            JasperViewer viewer = new JasperViewer(jasperPrint, false);
+            parameters.put("IMAGE_PATH", db.getClass().getResource("/imagenes/").toString());
+            JasperPrint jprint = JasperFillManager.fillReport(report, parameters, db.getConnection());
+            JasperViewer viewer = new JasperViewer(jprint, false);
             viewer.setVisible(true);
 
-        } catch (SQLException | JRException e) {
-            e.printStackTrace(); // Para depuración en consola
-            mostrarError("Error en la base de datos", "No se pudo conectar a la base de datos o generar el informe.");
+        } catch (SQLException e) {
+            mostrarError("No se ha podido establecer conexion con la Base de Datos");
+            Platform.exit();
+        } catch (JRException e) {
+            e.printStackTrace();
+            mostrarError("Error al generar el informe");
+            Platform.exit();
+        }finally {
+            Platform.exit();
         }
     }
 
     /**
-     * Muestra una ventana emergente con un mensaje de error.
+     * Metodo que muestra un mensaje de error en una ventana emergente.
      *
-     * @param titulo   El título de la ventana emergente.
-     * @param mensaje  El mensaje que se mostrará en la ventana.
+     * @param error El mensaje de error que se mostrará en la ventana emergente.
      */
-    private void mostrarError(String titulo, String mensaje) {
-        // Crear una ventana emergente de tipo "error"
-        Alert alert = new Alert(AlertType.ERROR);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null); // No queremos un encabezado
-        alert.setContentText(mensaje); // El mensaje que queremos mostrar
-        alert.showAndWait(); // Mostrar el mensaje y esperar a que el usuario lo cierre
+    void mostrarError(String error) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(error);
+        alert.showAndWait();
     }
 }
