@@ -2,10 +2,10 @@
 <jasperReport name="Ejercicio1" language="java" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ced95029-b569-4027-895c-af2843a4e088">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conexion MariaDB"/>
-	<style name="Title" fontName="Times New Roman" fontSize="50.0" bold="true"/>
-	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18.0"/>
-	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12.0" bold="true"/>
-	<style name="Detail" fontName="Arial" fontSize="12.0"/>
+	<style name="Title" fontName="SansSerif" fontSize="50.0" bold="true"/>
+	<style name="SubTitle" forecolor="#736343" fontName="SansSerif" fontSize="18.0"/>
+	<style name="Column header" forecolor="#666666" fontName="SansSerif" fontSize="12.0" bold="true"/>
+	<style name="Detail" fontName="SansSerif" fontSize="12.0"/>
 	<style name="Row" mode="Transparent">
 		<conditionalStyle backcolor="#E6DAC3">
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
@@ -39,10 +39,10 @@ FROM   paises.pais]]></query>
 		<element kind="image" uuid="ddc15723-2728-421f-b95e-2df9faf64ce1" x="0" y="0" width="164" height="126">
 			<expression><![CDATA[$P{IMAGE_PATH} + "naciones.png"]]></expression>
 		</element>
-		<element kind="staticText" uuid="1a652692-054a-40f3-ade5-68d8da36626d" x="170" y="0" width="230" height="62" fontName="SansSerif" fontSize="30.0" hTextAlign="Right" vTextAlign="Middle" style="Title">
+		<element kind="staticText" uuid="1a652692-054a-40f3-ade5-68d8da36626d" x="170" y="0" width="230" height="62" fontName="SansSerif" fontSize="30.0" hTextAlign="Right" vTextAlign="Middle">
 			<text><![CDATA[INFORME]]></text>
 		</element>
-		<element kind="staticText" uuid="88d4231e-f014-4b0d-b871-1737ba63a1ae" x="236" y="52" width="163" height="22" fontName="Times New Roman" fontSize="13.0" hTextAlign="Right" style="SubTitle">
+		<element kind="staticText" uuid="88d4231e-f014-4b0d-b871-1737ba63a1ae" x="236" y="52" width="163" height="22" fontName="SansSerif" fontSize="13.0" hTextAlign="Right" style="SubTitle">
 			<text><![CDATA[Listado de Naciones]]></text>
 		</element>
 		<element kind="staticText" uuid="f0bfb1ea-a85a-47cd-a1a4-43f22b45e80f" x="172" y="80" width="226" height="48" fontSize="10.0" hTextAlign="Right">

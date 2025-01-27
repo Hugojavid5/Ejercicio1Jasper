@@ -41,8 +41,13 @@ public class LanzadorInforme extends Application {
         try {
             db = new ConexionBBDD();
             // Carga el archivo Jasper del informe
-            InputStream reportStream = db.getClass().getResourceAsStream("/jasper/Ejercicio1Paises.jasper");
-
+            InputStream reportStream = db.getClass().getResourceAsStream("/Jasper/Ejercicio1Paises.jasper");
+            if (reportStream == null) {
+                System.out.println("No se pudo encontrar el archivo Jasper en el classpath.");
+                mostrarError("No se pudo cargar el informe");
+                Platform.exit();
+                return;
+            }
 
             JasperReport report = (JasperReport) JRLoader.loadObject(reportStream);
 
